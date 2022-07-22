@@ -41,6 +41,6 @@ describe("divide", () => {
 	});
 
 	test("divides by 0", () => {
-		expect(calculator.multiply(10,0)).toBe("Infinity");
+		expect(calculator.divide(10,0)).toBe(Infinity);
 	});
 });
