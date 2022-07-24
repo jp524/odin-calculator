@@ -31,9 +31,13 @@ function operate(operator, a, b) {
 
 let input = "";
 display = document.querySelector(".display");
+dotButton = document.querySelector("#dot");
 function writeDisplay(value) {
   input += value;
   display.textContent = input;
+  if (input.includes(".")) {
+    dotButton.disabled = true;
+  }
 }
 
 function clear() {
@@ -48,6 +52,15 @@ function splitInput(input) {
   return { numbers, operators };
 }
 
+function roundToFiveDecimals(total) {
+  return Math.round(total * 10**5) / 10**5;
+}
+
+function resetState() {
+  input = "";
+  dotButton.disabled = false;
+}
+
 function compute() {
   let { numbers, operators } = splitInput(input);
   let total = 0;
@@ -59,8 +72,8 @@ function compute() {
       total = operate(operators[i], total, numbers[i + 1]);
     }
   }
-  display.textContent = total;
-  input = "";
+  display.textContent = roundToFiveDecimals(total);
+  resetState();
   // Add cases for error handling: not enough numbers or operators, too many operators, too many dots, etc.
 }
 
