@@ -30,18 +30,27 @@ function operate(operator, a, b) {
 }
 
 let input = "";
+let error = false;
 display = document.querySelector(".display");
+errorMessage = document.querySelector(".errorMessage");
 dotButton = document.querySelector("#dot");
+
 function writeDisplay(value) {
   input += value;
   display.textContent = input;
   if (input.includes(".")) {
     dotButton.disabled = true;
-  }
+  };
+}
+
+function resetState() {
+  input = "";
+  dotButton.disabled = false;
+  error = false;
 }
 
 function clear() {
-  input = "";
+  resetState();
   display.textContent = input;
 }
 
@@ -53,28 +62,34 @@ function splitInput(input) {
 }
 
 function roundToFiveDecimals(total) {
-  return Math.round(total * 10**5) / 10**5;
+  return Math.round(total * 10 ** 5) / 10 ** 5;
 }
 
-function resetState() {
-  input = "";
-  dotButton.disabled = false;
+function checkErrors(numbers, operators) {
+  if (numbers.includes("") || !operators) {
+    error = true;
+    errorMessage.textContent = "Please enter a number followed by an operator and another number.";
+    resetState();
+  };
 }
 
 function compute() {
   let { numbers, operators } = splitInput(input);
-  let total = 0;
+  let total = "";
 
-  for (let i = 0; i < operators.length; i++) {
-    if (i === 0) {
-      total = operate(operators[0], numbers[0], numbers[1]);
-    } else {
-      total = operate(operators[i], total, numbers[i + 1]);
-    }
-  }
-  display.textContent = roundToFiveDecimals(total);
-  resetState();
-  // Add cases for error handling: not enough numbers or operators, too many operators, too many dots, etc.
+  checkErrors(numbers, operators);
+
+  if (!error) {
+    for (let i = 0; i < operators.length; i++) {
+      if (i === 0) {
+        total = operate(operators[0], numbers[0], numbers[1]);
+      } else {
+        total = operate(operators[i], total, numbers[i + 1]);
+      }
+    };
+    display.textContent = roundToFiveDecimals(total);
+    resetState();
+  };
 }
 
 buttons = document.querySelectorAll("button");
@@ -85,6 +100,7 @@ buttons.forEach(button => button.addEventListener("click", () => {
     compute();
   } else {
     writeDisplay(button.value);
+    errorMessage.textContent = "";
   };
 }));
 
