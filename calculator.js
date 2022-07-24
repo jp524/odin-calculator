@@ -42,24 +42,26 @@ function clear() {
 }
 
 function splitInput(input) {
-  const OPERATOR_OPTIONS = ["+", "-", "*", "/"];
-  const l = input.length;
-  let a = "";
-  let b = "";
-  let operator = "";
-  for (let i = 0; i < l; i++) {
-    if (OPERATOR_OPTIONS.includes(input[i])) {
-      a = input.slice(0, i);
-      operator = input.slice(i, i + 1);
-      b = input.slice(i + 1, l);
-      return toCompute = { a, b, operator };
-    };
-  };
+  const OPERATOR_OPTIONS = /\+|-|\*|\//g;
+  const numbers = input.split(OPERATOR_OPTIONS);
+  const operators = input.match(OPERATOR_OPTIONS);
+  return { numbers, operators };
 }
 
 function compute() {
-  let {a, b, operator} = splitInput(input);
-  display.textContent = operate(operator, a, b);
+  let { numbers, operators } = splitInput(input);
+  let total = 0;
+
+  for (let i = 0; i < operators.length; i++) {
+    if (i === 0) {
+      total = operate(operators[0], numbers[0], numbers[1]);
+    } else {
+      total = operate(operators[i], total, numbers[i + 1]);
+    }
+  }
+  display.textContent = total;
+  input = "";
+  // Add cases for error handling: not enough numbers or operators, too many operators, too many dots, etc.
 }
 
 buttons = document.querySelectorAll("button");
