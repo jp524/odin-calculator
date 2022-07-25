@@ -54,6 +54,14 @@ function clear() {
   display.textContent = input;
 }
 
+function backspace() {
+  input = input.slice(0, input.length - 1);
+  display.textContent = input;
+  if (!input.includes(".")) {
+    dotButton.disabled = false;
+  };
+}
+
 function splitInput(input) {
   const OPERATOR_OPTIONS = /\+|-|\*|\//g;
   const numbers = input.split(OPERATOR_OPTIONS);
@@ -96,6 +104,8 @@ buttons = document.querySelectorAll("button");
 buttons.forEach(button => button.addEventListener("click", () => {
   if (button.id === "clear") {
     clear();
+  } else if (button.id === "backspace") {
+    backspace();
   } else if (button.id === "equal") {
     compute();
   } else {

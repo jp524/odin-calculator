@@ -58,8 +58,13 @@ button:disabled {
   background-color: rgba(147, 112, 216, 0.417)
 }
 
-#clear {
-  width: 264px;
+#clear,
+#backspace {
+  width: 128px;
+}
+
+img {
+  height: 100%;
 }
 
 .footer {
