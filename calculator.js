@@ -114,6 +114,18 @@ buttons.forEach(button => button.addEventListener("click", () => {
   };
 }));
 
+window.addEventListener("keydown", (e) => {
+  const KEYBOARD_INPUTS = ["0", "1", "2", "3", "4", "5", "6",
+    "7", "8", "9", ".", "+", "-", "*", "/"];
+  if (e.key === "Backspace") {
+    backspace();
+  } else if (e.key === "=" || e.key === "Enter") {
+    compute();
+  } else if (KEYBOARD_INPUTS.includes(e.key)) {
+    writeDisplay(e.key);
+  };
+});
+
 // Testing
 module.exports = {
   add,
